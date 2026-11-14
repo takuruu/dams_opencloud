@@ -58,28 +58,31 @@ Weboberfläche: https://localhost:9200 (Login `admin` / `admin`).
   "apps": {
     "dams": {
       "spaceName": "Datenschutz",
-      "folderPath": "/Verfahrensverzeichnis"
+      "folderPath": "/Verfahrensverzeichnis",
+      "processorsFolderPath": "/Auftragsverarbeiter"
     }
   }
 }
 ```
 
-| Option       | Standard                  | Bedeutung                                  |
-| ------------ | ------------------------- | ------------------------------------------ |
-| `spaceName`  | `Datenschutz`             | Name des Spaces mit der Dokumentation      |
-| `folderPath` | `/Verfahrensverzeichnis`  | Ordner innerhalb des Spaces               |
+| Option               | Standard                  | Bedeutung                                  |
+| -------------------  | ------------------------- | ------------------------------------------ |
+| `spaceName`          | `Datenschutz`             | Name des Spaces mit der Dokumentation      |
+| `folderPath`         | `/Verfahrensverzeichnis`  | Ordner der Verfahren im Space              |
+| `processorsFolderPath` | `/Auftragsverarbeiter`  | Ordner der Auftragsverarbeiter im Space    |
 
-Der Space und der Ordner müssen existieren (z. B. per Vorlagen-Sync, siehe
-`cli/README.md`). Die App zeigt andernfalls einen Hinweis mit Anlage-Button.
+Der Space muss existieren; fehlende Modul-Ordner legt die App beim ersten Aufruf
+selbst an. Alternativ können die Vorlagen per Sync geladen werden.
 
 ## Vorbereiten des Spaces
 
 1. Space `Datenschutz` anlegen ( beliebiger Name, muss zur Konfiguration passen).
-2. Vorlagen aus `templates/Verfahrensverzeichnis/` in den Space laden – entweder
-   per Weboberfläche/Upload oder per CLI:
+2. Vorlagen aus `templates/` in den Space laden – entweder per Weboberfläche/Upload
+   oder per CLI:
 
 ```bash
 python3 cli/dams_sync.py templates/Verfahrensverzeichnis /Verfahrensverzeichnis
+python3 cli/dams_sync.py templates/Auftragsverarbeiter /Auftragsverarbeiter
 ```
 
 ## Rechte

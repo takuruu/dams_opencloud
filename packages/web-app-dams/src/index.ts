@@ -1,6 +1,7 @@
 import '@opencloud-eu/extension-sdk/tailwind.css'
 import {
   AppMenuItemExtension,
+  AppNavigationItem,
   AppWrapperRoute,
   defineWebApplication,
   useUserStore
@@ -10,7 +11,8 @@ import { RouteRecordRaw } from 'vue-router'
 import { computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { appId } from './types'
-import AppView from './views/AppView.vue'
+import ProcessorsView from './views/ProcessorsView.vue'
+import RecordsView from './views/RecordsView.vue'
 
 export default defineWebApplication({
   setup() {
@@ -33,11 +35,37 @@ export default defineWebApplication({
       {
         path: '/records',
         name: `${appId}-records`,
-        component: AppWrapperRoute(AppView, { applicationId: appId }),
+        component: AppWrapperRoute(RecordsView, { applicationId: appId }),
         meta: {
           authContext: 'user',
           title: $gettext('Verfahrensverzeichnis')
         }
+      },
+      {
+        path: '/avv',
+        name: `${appId}-avv`,
+        component: AppWrapperRoute(ProcessorsView, { applicationId: appId }),
+        meta: {
+          authContext: 'user',
+          title: $gettext('Auftragsverarbeiter & AVV')
+        }
+      }
+    ]
+
+    const navItems: AppNavigationItem[] = [
+      {
+        name: $gettext('Verfahrensverzeichnis'),
+        icon: 'shield-check',
+        route: { path: urlJoin(appInfo.id, 'records') },
+        activeFor: [{ name: `${appId}-records` }],
+        isVisible: () => !!userStore.user
+      },
+      {
+        name: $gettext('Auftragsverarbeiter & AVV'),
+        icon: 'file-shield-2',
+        route: { path: urlJoin(appInfo.id, 'avv') },
+        activeFor: [{ name: `${appId}-avv` }],
+        isVisible: () => !!userStore.user
       }
     ]
 
@@ -61,6 +89,7 @@ export default defineWebApplication({
     return {
       appInfo,
       routes,
+      navItems,
       extensions
     }
   }

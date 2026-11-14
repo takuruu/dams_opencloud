@@ -4,7 +4,11 @@ DAMS ist eine Web-App-Erweiterung für [OpenCloud](https://opencloud.eu), mit de
 Unternehmen ihre DSGVO-Dokumentation direkt in OpenCloud pflegen können – als Flat-Files
 in Markdown, mit automatischer Datei-Versionierung durch OpenCloud.
 
-Erster Funktionsumfang: das **Verfahrensverzeichnis nach Art. 30 DSGVO**.
+Funktionsumfang:
+
+- **Verfahrensverzeichnis** nach Art. 30 DSGVO
+- **Auftragsverarbeiter & AVV** nach Art. 28 DSGVO (Verzeichnis der Auftragsverarbeiter
+  mit Vertragsstatus, Drittland-Angaben, TOM-Nachweis und Verknüpfung zu Verfahren)
 
 ## Grundprinzip
 
@@ -22,7 +26,7 @@ Erster Funktionsumfang: das **Verfahrensverzeichnis nach Art. 30 DSGVO**.
 
 ```
 ├── packages/web-app-dams/   # OpenCloud Web-App (Vue 3 / TypeScript)
-├── templates/               # Markdown-Vorlagen & Beispiele (Verfahrensverzeichnis)
+├── templates/               # Markdown-Vorlagen & Beispiele (Verfahrensverzeichnis, AVV)
 ├── cli/                     # Optionales CLI: Sync der Markdown-Struktur via WebDAV
 └── docs/                    # Konzept, Datenmodell, Installation
 ```
@@ -44,9 +48,9 @@ docker compose up   # startet OpenCloud auf https://localhost:9200
 ```
 
 Login `admin` / `admin`. Die App erscheint nach dem Neuladen der Weboberfläche als
-„Datenschutz“ im App-Switcher. Für die Nutzung: einen Space namens `Datenschutz`
-anlegen und dort den Ordner `Verfahrensverzeichnis` (oder die Vorlagen aus
-`templates/Verfahrensverzeichnis/`) ablegen.
+„Datenschutz“ im App-Switcher, mit Navigation zwischen den Modulen. Für die
+Nutzung: einen Space namens `Datenschutz` anlegen und dort die Ordner aus
+`templates/` ablegen (die App legt fehlende Ordner beim ersten Aufruf selbst an).
 
  Mehr zur Installation und Konfiguration: [docs/installation.md](docs/installation.md)
 
@@ -60,14 +64,16 @@ werden:
   "apps": {
     "dams": {
       "spaceName": "Datenschutz",
-      "folderPath": "/Verfahrensverzeichnis"
+      "folderPath": "/Verfahrensverzeichnis",
+      "processorsFolderPath": "/Auftragsverarbeiter"
     }
   }
 }
 ```
 
 - `spaceName` – Name des Spaces, in dem die Dokumentation liegt (Standard: `Datenschutz`)
-- `folderPath` – Pfad innerhalb des Spaces (Standard: `/Verfahrensverzeichnis`)
+- `folderPath` – Pfad der Verfahren im Space (Standard: `/Verfahrensverzeichnis`)
+- `processorsFolderPath` – Pfad der Auftragsverarbeiter im Space (Standard: `/Auftragsverarbeiter`)
 
 ## CLI-Sync (optional)
 
@@ -77,6 +83,7 @@ export OPENCLOUD_ACCESS_TOKEN=<persönliches Zugriffstoken>
 export OPENCLOUD_SPACE=Datenschutz
 
 python3 cli/dams_sync.py templates/Verfahrensverzeichnis /Verfahrensverzeichnis
+python3 cli/dams_sync.py templates/Auftragsverarbeiter /Auftragsverarbeiter
 ```
 
 Das CLI legt fehlende Ordner an und lädt neue/geänderte Markdown-Dateien per WebDAV

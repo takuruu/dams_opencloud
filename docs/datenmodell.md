@@ -1,4 +1,20 @@
-# Datenmodell: Verfahrensverzeichnis (Art. 30 DSGVO)
+# Datenmodell
+
+## Module
+
+Das DAMS verwendet zwei Ordner im Space, je ein Modul:
+
+| Modul                        | Ordner                 | Route        |
+| ---------------------------- | ---------------------- | ------------ |
+| Verfahrensverzeichnis (Art. 30) | `/Verfahrensverzeichnis` | `/{appId}/records` |
+| Auftragsverarbeiter & AVV (Art. 28) | `/Auftragsverarbeiter` | `/{appId}/avv` |
+
+Beide Module folgen demselben Prinzip: eine Markdown-Datei pro Eintrag,
+YAML-Frontmatter für strukturierte Felder, Freitext für Details.
+
+---
+
+# Modul 1: Verfahrensverzeichnis (Art. 30 DSGVO)
 
 Jede Verarbeitungstätigkeit ist eine Markdown-Datei im Ordner
 `/Verfahrensverzeichnis` des konfigurierten Spaces. Dateiname-Konvention:
@@ -56,6 +72,58 @@ geaendert: 2026-02-01
   beliebige Markdown-Abschnitte enthalten.
 - Die App toleriert fehlende Felder (leere Anzeige), validiert aber Pflichtfelder
   beim Speichern.
+
+---
+
+# Modul 2: Auftragsverarbeiter & AVV (Art. 28 DSGVO)
+
+Jeder Auftragsverarbeiter ist eine Markdown-Datei im Ordner
+`/Auftragsverarbeiter`. Dateiname-Konvention: `kurztitel.md` (automatisch aus dem
+Firmennamen erzeugt, z. B. `analytics-gmbh.md`).
+
+## Aufbau einer Datei
+
+```markdown
+---
+firma: Analytics GmbH
+dienstleistung: Hosting und Betrieb der Webanalyse-Software
+kontakt: Jane Doe, privacy@analytics.example
+vertragsbeginn: 2026-01-10
+vertragsende: unbefristet
+status: unterzeichnet
+drittland: Nein
+tom: Ja
+verfahren:
+  - Webanalyse und Reichweitenmessung
+erstellt: 2026-01-15
+geaendert: 2026-02-01
+---
+
+# AVV: Analytics GmbH
+
+## Vertragsgegenstand
+...
+```
+
+## Felder (Frontmatter)
+
+| Feld             | DSGVO-Bezug                       | Pflicht | Typ             |
+| ---------------- | --------------------------------- | ------- | --------------- |
+| `firma`          | Benennung des Auftragsverarbeiters | ja     | String          |
+| `dienstleistung` | Art der Verarbeitung              | ja      | String          |
+| `kontakt`        | intern                            | ja      | String          |
+| `vertragsbeginn` | intern (ISO-Datum)                | ja      | String          |
+| `vertragsende`   | intern (ISO-Datum/unbefristet)    | ja      | String          |
+| `status`         | Vertragsstatus                    | ja      | `entwurf` \| `unterzeichnet` \| `gekuendigt` |
+| `drittland`      | Art.  44 ff. DSGVO                | ja      | String          |
+| `tom`            | Art. 28 Abs. 3 lit. f DSGVO       | ja      | String (Ja/Nein) |
+| `verfahren`      | Verknüpfung zum Verfahrensverzeichnis (Titel) | ja | Liste (Strings) |
+| `erstellt`       | intern (ISO-Datum)                | ja      | String          |
+| `geaendert`      | intern (ISO-Datum)                | ja      | String          |
+
+Die Verknüpfung zu Verfahren erfolgt über die Liste `verfahren` mit den Titeln
+der Einträge im Verfahrensverzeichnis – bewusst als lesbarer Text statt IDs,
+damit die Dokumentation auch ohne die App nachvollziehbar bleibt.
 
 ## Versionierung
 
