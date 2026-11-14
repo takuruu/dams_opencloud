@@ -3,44 +3,49 @@ import { computed, ref, unref } from 'vue'
 import { useGettext } from 'vue3-gettext'
 import { useSpaceDocuments } from './useSpaceDocuments'
 import { buildFileName } from '../lib/frontmatter'
-import { toProcessorMarkdown, toProcessorRecord } from '../lib/avv'
-import { DamsConfig, ProcessorRecord } from '../types'
+import { buildModuleMarkdown, parseModuleRecord } from '../lib/documents'
+import { DamsConfig, DamsModule, ModuleRecord } from '../types'
 
-export const useProcessors = (config: () => DamsConfig) => {
+export const useModule = (module: DamsModule, config: () => DamsConfig) => {
   const { $gettext } = useGettext()
   const { showMessage } = useMessages()
 
   const documents = useSpaceDocuments(
     () => config().spaceName,
-    () => config().processorsFolderPath
+    () => config().folderPaths[module.configKey] ?? module.folderPath
   )
 
-  const processors = ref<ProcessorRecord[]>([])
+  const records = ref<ModuleRecord[]>([])
 
-  const loadProcessors = async () => {
+  const loadRecords = async () => {
     const loaded = await documents.loadDocuments()
-    processors.value = loaded
-      .map((doc) => toProcessorRecord(doc.fileName, doc.path, doc.content, doc.etag))
-      .sort((a, b) => a.firma.localeCompare(b.firma, 'de'))
+    records.value = loaded
+      .map((doc) => parseModuleRecord(module, doc.fileName, doc.path, doc.content, doc.etag))
+      .sort((a, b) =>
+        String(a.data[module.nameField] ?? '').localeCompare(
+          String(b.data[module.nameField] ?? ''),
+          'de'
+        )
+      )
   }
 
-  const saveProcessor = async (record: ProcessorRecord): Promise<ProcessorRecord | null> => {
+  const saveRecord = async (record: ModuleRecord): Promise<ModuleRecord | null> => {
     const today = new Date().toISOString().slice(0, 10)
-    if (!record.erstellt) {
-      record.erstellt = today
+    if (!record.data.erstellt) {
+      record.data.erstellt = today
     }
-    record.geaendert = today
+    record.data.geaendert = today
     const isNew = !record.path
     if (isNew) {
       record.fileName = buildFileName(
-        record.firma,
-        unref(processors).map((p) => p.fileName)
+        String(record.data[module.nameField] ?? ''),
+        unref(records).map((r) => r.fileName)
       )
     }
     const saved = await documents.saveDocument(
       record.fileName,
       record.path,
-      toProcessorMarkdown(record),
+      buildModuleMarkdown(module, record),
       record.etag
     )
     if (!saved) {
@@ -49,11 +54,11 @@ export const useProcessors = (config: () => DamsConfig) => {
     record.path = saved.path
     record.etag = saved.etag
     if (isNew) {
-      processors.value = [...unref(processors), record]
+      records.value = [...unref(records), record]
     }
     showMessage({
       title: $gettext('»%{name}« wurde gespeichert. Eine neue Version wurde erstellt.', {
-        name: record.firma
+        name: String(record.data[module.nameField] ?? record.fileName)
       })
     })
     return record
@@ -64,11 +69,11 @@ export const useProcessors = (config: () => DamsConfig) => {
   const space = computed(() => unref(documents.space))
 
   return {
-    processors,
+    records,
     loading,
     space,
     canWrite,
-    loadProcessors,
-    saveProcessor
+    loadRecords,
+    saveRecord
   }
 }

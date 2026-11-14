@@ -1,5 +1,3 @@
-import { ProcessingRecord } from '../types'
-
 const FRONTMATTER_DELIMITER = '---'
 
 export const parseFrontmatter = (content: string): Record<string, string | string[]> => {
@@ -78,55 +76,6 @@ export const serializeFrontmatter = (data: Record<string, string | string[]>): s
   return [FRONTMATTER_DELIMITER, ...entries, FRONTMATTER_DELIMITER].join('\n')
 }
 
-export const toRecord = (
-  fileName: string,
-  path: string,
-  content: string,
-  etag?: string
-): ProcessingRecord => {
-  const data = parseFrontmatter(content)
-  const asString = (key: string): string => {
-    const value = data[key]
-    return Array.isArray(value) ? value.join(', ') : (value ?? '')
-  }
-  return {
-    fileName,
-    path,
-    etag,
-    titel: asString('titel'),
-    verantwortlicher: asString('verantwortlicher'),
-    zweck: asString('zweck'),
-    kategorien: Array.isArray(data.kategorien) ? data.kategorien : [],
-    betroffene: asString('betroffene'),
-    empfaenger: asString('empfaenger'),
-    drittland: asString('drittland'),
-    loeschfrist: asString('loeschfrist'),
-    rechtsgrundlage: asString('rechtsgrundlage'),
-    status: asString('status') || 'entwurf',
-    erstellt: asString('erstellt'),
-    geaendert: asString('geaendert'),
-    beschreibung: extractBody(content)
-  }
-}
-
-export const toMarkdown = (record: ProcessingRecord): string => {
-  const frontmatter = serializeFrontmatter({
-    titel: record.titel,
-    verantwortlicher: record.verantwortlicher,
-    zweck: record.zweck,
-    kategorien: record.kategorien,
-    betroffene: record.betroffene,
-    empfaenger: record.empfaenger,
-    drittland: record.drittland,
-    loeschfrist: record.loeschfrist,
-    rechtsgrundlage: record.rechtsgrundlage,
-    status: record.status,
-    erstellt: record.erstellt,
-    geaendert: record.geaendert
-  })
-  return `${frontmatter}\n\n${record.beschreibung.trim()}\n`
-}
-
 const slugify = (value: string): string => {
   return value
     .toLowerCase()
@@ -138,8 +87,8 @@ const slugify = (value: string): string => {
     .replace(/^-+|-+$/g, '')
 }
 
-export const buildFileName = (titel: string, existing: string[]): string => {
-  const base = slugify(titel) || 'verfahren'
+export const buildFileName = (value: string, existing: string[]): string => {
+  const base = slugify(value) || 'eintrag'
   let fileName = `${base}.md`
   let counter = 2
   while (existing.includes(fileName)) {

@@ -4,13 +4,18 @@
 
 Das DAMS verwendet zwei Ordner im Space, je ein Modul:
 
-| Modul                        | Ordner                 | Route        |
-| ---------------------------- | ---------------------- | ------------ |
-| Verfahrensverzeichnis (Art. 30) | `/Verfahrensverzeichnis` | `/{appId}/records` |
-| Auftragsverarbeiter & AVV (Art. 28) | `/Auftragsverarbeiter` | `/{appId}/avv` |
+| Modul                                            | Ordner                  | Route              |
+| ------------------------------------------------ | ----------------------- | ------------------ |
+| Verfahrensverzeichnis (Art. 30)                  | `/Verfahrensverzeichnis` | `/{appId}/records` |
+| Auftragsverarbeiter & AVV (Art. 28)              | `/Auftragsverarbeiter`  | `/{appId}/avv`     |
+| Technische und organisatorische Maßnahmen (Art. 32) | `/TOM`                | `/{appId}/tom`     |
+| Datenschutzvorfälle (Art. 33/34)                  | `/Datenschutzvorfälle`  | `/{appId}/vorfälle` |
+| Betroffenenanfragen (Art. 15–22)                 | `/Betroffenenanfragen`  | `/{appId}/anfragen` |
 
-Beide Module folgen demselben Prinzip: eine Markdown-Datei pro Eintrag,
-YAML-Frontmatter für strukturierte Felder, Freitext für Details.
+Alle Module folgen demselben Prinzip: eine Markdown-Datei pro Eintrag,
+YAML-Frontmatter für strukturierte Felder, Freitext für Details. Die App legt
+die Ordnerstruktur nach dem Schema in `src/types.ts` (`MODULES`) an – neue
+Module sind dort reine Konfiguration (Feld-Deskriptoren), ohne eigene View.
 
 ---
 
@@ -124,6 +129,57 @@ geaendert: 2026-02-01
 Die Verknüpfung zu Verfahren erfolgt über die Liste `verfahren` mit den Titeln
 der Einträge im Verfahrensverzeichnis – bewusst als lesbarer Text statt IDs,
 damit die Dokumentation auch ohne die App nachvollziehbar bleibt.
+
+---
+
+# Modul 3: Technische und organisatorische Maßnahmen (Art. 32 DSGVO)
+
+Jede Maßnahme ist eine Datei im Ordner `/TOM` (eine Maßnahme = ein Eintrag mit
+eigenem Umsetzungsstatus).
+
+| Feld            | Bedeutung                          | Typ                                        |
+| --------------- | ---------------------------------- | ------------------------------------------ |
+| `massnahme`     | Kurztitel der Maßnahme             | String                                     |
+| `bereich`       | z. B. Zugriffskontrolle            | String                                     |
+| `umsetzung`     | Umsetzungsstatus                   | `geplant` \| `in Umsetzung` \| `umgesetzt` |
+| `verantwortlich`| Rolle/Person für Umsetzung         | String                                     |
+| `frist`         | Frist / nächster Prüftermin        | ISO-Datum                                  |
+| `erstellt`/`geaendert` | intern                     | ISO-Datum                                  |
+
+---
+
+# Modul 4: Datenschutzvorfälle (Art. 33/34 DSGVO)
+
+Jeder Vorfall ist eine Datei im Ordner `/Datenschutzvorfälle`. Zentrale Felder
+für die Meldepflicht-Prüfung (72-h-Frist, Art. 33 Abs. 1):
+
+| Feld                   | Bedeutung                          | Typ                                  |
+| ---------------------- | ---------------------------------- | ------------------------------------ |
+| `titel`               | Kurztitel des Vorfalls             | String                               |
+| `eingang`             | Festgestellt am                    | ISO-Datum                            |
+| `betroffene_daten`    | Kategorien betroffener Daten       | String                               |
+| `betroffene_personen` | Anzahl/Kategorien betroffener Personen | String                          |
+| `meldepflichtig`      | Meldeschwellen-Prüfung             | `ja` \| `nein` \| `unbekannt`      |
+| `frist_72h`           | 72-h-Frist, falls zutreffend       | ISO-Datum                            |
+| `status`              | `offen` \| `gemeldet` \| `abgeschlossen` | String                      |
+| `erstellt`/`geaendert`| intern                             | ISO-Datum                            |
+
+---
+
+# Modul 5: Betroffenenanfragen (Art. 15–22 DSGVO)
+
+Jede Anfrage ist eine Datei im Ordner `/Betroffenenanfragen`. Personen werden
+anonymisiert dokumentiert (kein Klartext von Namen im Frontmatter).
+
+| Feld          | Bedeutung                            | Typ                        |
+| ------------- | ------------------------------------ | -------------------------- |
+| `betrifft`    | Person, anonymisiert                 | String                     |
+| `art`         | Art der Anfrage (Art. 15–21)         | Select, z. B. `Auskunft (Art. 15)` |
+| `eingang`     | Eingangsdatum                        | ISO-Datum                  |
+| `frist`       | Antwortfrist (i. d. R. + 1 Monat)    | ISO-Datum                  |
+| `antwort_am`  | Beantwortet am                       | ISO-Datum                  |
+| `status`      | `offen` \| `in Bearbeitung` \| `abgeschlossen` | String          |
+| `erstellt`/`geaendert` | intern                    | ISO-Datum                  |
 
 ## Versionierung
 

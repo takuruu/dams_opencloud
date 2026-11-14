@@ -10,9 +10,16 @@ import { urlJoin } from '@opencloud-eu/web-client'
 import { RouteRecordRaw } from 'vue-router'
 import { computed } from 'vue'
 import { useGettext } from 'vue3-gettext'
-import { appId } from './types'
-import ProcessorsView from './views/ProcessorsView.vue'
-import RecordsView from './views/RecordsView.vue'
+import { appId, MODULES } from './types'
+import ModuleView from './views/ModuleView.vue'
+
+const moduleIcons: Record<string, string> = {
+  records: 'shield-check',
+  avv: 'file-shield-2',
+  tom: 'lock-2',
+  incidents: 'alarm-warning',
+  dsr: 'user-settings'
+}
 
 export default defineWebApplication({
   setup() {
@@ -30,44 +37,27 @@ export default defineWebApplication({
       {
         path: '/',
         name: `${appId}-root`,
-        redirect: `/${appId}/records`
+        redirect: `/${appId}/${MODULES[0].routeSlug}`
       },
-      {
-        path: '/records',
-        name: `${appId}-records`,
-        component: AppWrapperRoute(RecordsView, { applicationId: appId }),
+      ...MODULES.map((module) => ({
+        path: `/${module.routeSlug}`,
+        name: `${appId}-${module.id}`,
+        component: AppWrapperRoute(ModuleView, { applicationId: appId }),
         meta: {
           authContext: 'user',
-          title: $gettext('Verfahrensverzeichnis')
+          title: $gettext(module.title)
         }
-      },
-      {
-        path: '/avv',
-        name: `${appId}-avv`,
-        component: AppWrapperRoute(ProcessorsView, { applicationId: appId }),
-        meta: {
-          authContext: 'user',
-          title: $gettext('Auftragsverarbeiter & AVV')
-        }
-      }
+      }))
     ]
 
-    const navItems: AppNavigationItem[] = [
-      {
-        name: $gettext('Verfahrensverzeichnis'),
-        icon: 'shield-check',
-        route: { path: urlJoin(appInfo.id, 'records') },
-        activeFor: [{ name: `${appId}-records` }],
-        isVisible: () => !!userStore.user
-      },
-      {
-        name: $gettext('Auftragsverarbeiter & AVV'),
-        icon: 'file-shield-2',
-        route: { path: urlJoin(appInfo.id, 'avv') },
-        activeFor: [{ name: `${appId}-avv` }],
-        isVisible: () => !!userStore.user
-      }
-    ]
+    const navItems: AppNavigationItem[] = MODULES.map((module, index) => ({
+      name: $gettext(module.title),
+      icon: moduleIcons[module.id] || 'shield-check',
+      route: { path: urlJoin(appInfo.id, module.routeSlug) },
+      activeFor: [{ name: `${appId}-${module.id}` }],
+      priority: index,
+      isVisible: () => !!userStore.user
+    }))
 
     const extensions = computed<AppMenuItemExtension[]>(() => {
       if (!userStore.user) {

@@ -58,21 +58,26 @@ Weboberfläche: https://localhost:9200 (Login `admin` / `admin`).
   "apps": {
     "dams": {
       "spaceName": "Datenschutz",
-      "folderPath": "/Verfahrensverzeichnis",
-      "processorsFolderPath": "/Auftragsverarbeiter"
+      "folderPaths": {
+        "folderPath": "/Verfahrensverzeichnis",
+        "processorsFolderPath": "/Auftragsverarbeiter",
+        "tomFolderPath": "/TOM",
+        "incidentsFolderPath": "/Datenschutzvorfälle",
+        "dsrFolderPath": "/Betroffenenanfragen"
+      }
     }
   }
 }
 ```
 
-| Option               | Standard                  | Bedeutung                                  |
-| -------------------  | ------------------------- | ------------------------------------------ |
-| `spaceName`          | `Datenschutz`             | Name des Spaces mit der Dokumentation      |
-| `folderPath`         | `/Verfahrensverzeichnis`  | Ordner der Verfahren im Space              |
-| `processorsFolderPath` | `/Auftragsverarbeiter`  | Ordner der Auftragsverarbeiter im Space    |
+| Option       | Standard       | Bedeutung                                  |
+| ------------ | -------------- | ------------------------------------------ |
+| `spaceName`  | `Datenschutz`  | Name des Spaces mit der Dokumentation      |
+| `folderPaths` | siehe oben     | Ordnerpfade je Modul im Space              |
 
 Der Space muss existieren; fehlende Modul-Ordner legt die App beim ersten Aufruf
-selbst an. Alternativ können die Vorlagen per Sync geladen werden.
+des jeweiligen Moduls selbst an. Alternativ können die Vorlagen per Sync geladen
+werden.
 
 ## Vorbereiten des Spaces
 
@@ -83,6 +88,9 @@ selbst an. Alternativ können die Vorlagen per Sync geladen werden.
 ```bash
 python3 cli/dams_sync.py templates/Verfahrensverzeichnis /Verfahrensverzeichnis
 python3 cli/dams_sync.py templates/Auftragsverarbeiter /Auftragsverarbeiter
+python3 cli/dams_sync.py templates/TOM /TOM
+python3 cli/dams_sync.py templates/Datenschutzvorfälle /Datenschutzvorfälle
+python3 cli/dams_sync.py templates/Betroffenenanfragen /Betroffenenanfragen
 ```
 
 ## Rechte

@@ -7,8 +7,11 @@ in Markdown, mit automatischer Datei-Versionierung durch OpenCloud.
 Funktionsumfang:
 
 - **Verfahrensverzeichnis** nach Art. 30 DSGVO
-- **Auftragsverarbeiter & AVV** nach Art. 28 DSGVO (Verzeichnis der Auftragsverarbeiter
-  mit Vertragsstatus, Drittland-Angaben, TOM-Nachweis und Verknüpfung zu Verfahren)
+- **Auftragsverarbeiter & AVV** nach Art. 28 DSGVO (Vertragsstatus, Drittland-Angaben,
+  TOM-Nachweis, Verknüpfung zu Verfahren)
+- **TOM** nach Art. 32 DSGVO (Maßnahmenkatalog mit Umsetzungsstatus je Maßnahme)
+- **Datenschutzvorfälle** nach Art. 33/34 DSGVO (mit Meldepflicht-Prüfung und 72-h-Frist)
+- **Betroffenenanfragen** nach Art. 15–22 DSGVO (mit Fristen-Tracking)
 
 ## Grundprinzip
 
@@ -26,7 +29,7 @@ Funktionsumfang:
 
 ```
 ├── packages/web-app-dams/   # OpenCloud Web-App (Vue 3 / TypeScript)
-├── templates/               # Markdown-Vorlagen & Beispiele (Verfahrensverzeichnis, AVV)
+├── templates/               # Markdown-Vorlagen & Beispiele (alle Module)
 ├── cli/                     # Optionales CLI: Sync der Markdown-Struktur via WebDAV
 └── docs/                    # Konzept, Datenmodell, Installation
 ```
@@ -64,16 +67,22 @@ werden:
   "apps": {
     "dams": {
       "spaceName": "Datenschutz",
-      "folderPath": "/Verfahrensverzeichnis",
-      "processorsFolderPath": "/Auftragsverarbeiter"
+      "folderPaths": {
+        "folderPath": "/Verfahrensverzeichnis",
+        "processorsFolderPath": "/Auftragsverarbeiter",
+        "tomFolderPath": "/TOM",
+        "incidentsFolderPath": "/Datenschutzvorfälle",
+        "dsrFolderPath": "/Betroffenenanfragen"
+      }
     }
   }
 }
 ```
 
 - `spaceName` – Name des Spaces, in dem die Dokumentation liegt (Standard: `Datenschutz`)
-- `folderPath` – Pfad der Verfahren im Space (Standard: `/Verfahrensverzeichnis`)
-- `processorsFolderPath` – Pfad der Auftragsverarbeiter im Space (Standard: `/Auftragsverarbeiter`)
+- `folderPaths` – Ordnerpfade je Modul im Space (Schlüssel: `folderPath` = Verfahrensverzeichnis,
+  `processorsFolderPath` = AVV, `tomFolderPath` = TOM, `incidentsFolderPath` = Vorfälle,
+  `dsrFolderPath` = Betroffenenanfragen)
 
 ## CLI-Sync (optional)
 
@@ -84,6 +93,9 @@ export OPENCLOUD_SPACE=Datenschutz
 
 python3 cli/dams_sync.py templates/Verfahrensverzeichnis /Verfahrensverzeichnis
 python3 cli/dams_sync.py templates/Auftragsverarbeiter /Auftragsverarbeiter
+python3 cli/dams_sync.py templates/TOM /TOM
+python3 cli/dams_sync.py templates/Datenschutzvorfälle /Datenschutzvorfälle
+python3 cli/dams_sync.py templates/Betroffenenanfragen /Betroffenenanfragen
 ```
 
 Das CLI legt fehlende Ordner an und lädt neue/geänderte Markdown-Dateien per WebDAV
