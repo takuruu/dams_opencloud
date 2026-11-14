@@ -97,3 +97,8 @@ python3 cli/dams_sync.py templates/Betroffenenanfragen /Betroffenenanfragen
 
 Nutzer der App brauchen mindestens Leserecht auf den Space; zum Anlegen/Bearbeiten
 von Verfahren Schreibrecht. Die Versionierung greift automatisch für alle Schreibenden.
+
+## Testen
+
+Für den kompletten Laufzeit-Test gegen eine echte OpenCloud-Instanz siehe
+[test-checkliste.md](test-checkliste.md).

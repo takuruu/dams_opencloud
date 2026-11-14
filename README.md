@@ -104,8 +104,9 @@ hoch – dabei erzeugt OpenCloud automatisch neue Versionen. Details: [cli/READM
 ## Dokumentation
 
 - [docs/konzept.md](docs/konzept.md) – Architektur und Grundprinzipien
-- [docs/datenmodell.md](docs/datenmodell.md) – Frontmatter-Schema der Verfahren (Art. 30 DSGVO)
+- [docs/datenmodell.md](docs/datenmodell.md) – Frontmatter-Schemas aller fünf DSGVO-Module
 - [docs/installation.md](docs/installation.md) – Build, Installation, Konfiguration
+- [docs/test-checkliste.md](docs/test-checkliste.md) – Laufzeit-Test gegen eine echte OpenCloud-Instanz
 
 ## License
 
