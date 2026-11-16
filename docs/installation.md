@@ -9,7 +9,7 @@
 ## Bauen
 
 ```bash
-cd packages/web-app-dams
+cd packages/web-app-vesta-privacy
 pnpm install
 pnpm build          # Produktions-Build nach dist/
 pnpm check:types    # Typcheck
@@ -18,7 +18,7 @@ pnpm test:unit      # Unit-Tests
 
 ## Installation in OpenCloud
 
-Der Inhalt von `packages/web-app-dams/dist` muss als App in OpenCloud bereitgestellt
+Der Inhalt von `packages/web-app-vesta-privacy/dist` muss als App in OpenCloud bereitgestellt
 werden. Zwei übliche Wege:
 
 ### Docker (mount als Web-App)
@@ -30,7 +30,7 @@ services:
     environment:
       WEB_ASSET_APPS_PATH: /web/apps
     volumes:
-      - ./packages/web-app-dams/dist:/web/apps/dams
+      - ./packages/web-app-vesta-privacy/dist:/web/apps/vesta-privacy
 ```
 
 Anschließend OpenCloud neu starten; die App erscheint im App-Switcher als „Datenschutz“.
@@ -42,7 +42,7 @@ Im Repo-Root liegt eine `docker-compose.yml`, die identisch zum offiziellen
 
 ```bash
 # Terminal 1
-cd packages/web-app-dams && pnpm install && pnpm build:w
+cd packages/web-app-vesta-privacy && pnpm install && pnpm build:w
 # Terminal 2
 docker compose up
 ```
@@ -56,7 +56,7 @@ Weboberfläche: https://localhost:9200 (Login `admin` / `admin`).
 ```json
 {
   "apps": {
-    "dams": {
+    "vesta-privacy": {
       "spaceName": "Datenschutz",
       "folderPaths": {
         "folderPath": "/Verfahrensverzeichnis",
@@ -86,11 +86,11 @@ werden.
    oder per CLI:
 
 ```bash
-python3 cli/dams_sync.py templates/Verfahrensverzeichnis /Verfahrensverzeichnis
-python3 cli/dams_sync.py templates/Auftragsverarbeiter /Auftragsverarbeiter
-python3 cli/dams_sync.py templates/TOM /TOM
-python3 cli/dams_sync.py templates/Datenschutzvorfälle /Datenschutzvorfälle
-python3 cli/dams_sync.py templates/Betroffenenanfragen /Betroffenenanfragen
+python3 cli/vesta_sync.py templates/Verfahrensverzeichnis /Verfahrensverzeichnis
+python3 cli/vesta_sync.py templates/Auftragsverarbeiter /Auftragsverarbeiter
+python3 cli/vesta_sync.py templates/TOM /TOM
+python3 cli/vesta_sync.py templates/Datenschutzvorfälle /Datenschutzvorfälle
+python3 cli/vesta_sync.py templates/Betroffenenanfragen /Betroffenenanfragen
 ```
 
 ## Rechte

@@ -2,7 +2,7 @@
 
 ## Module
 
-Das DAMS verwendet zwei Ordner im Space, je ein Modul:
+Vesta Privacy verwendet zwei Ordner im Space, je ein Modul:
 
 | Modul                                            | Ordner                  | Route              |
 | ------------------------------------------------ | ----------------------- | ------------------ |

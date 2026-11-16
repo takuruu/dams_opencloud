@@ -1,7 +1,7 @@
 {
-  "name": "web-app-dams",
+  "name": "web-app-vesta-privacy",
   "version": "0.1.0",
-  "description": "Datenschutzmanagementsystem (DSGVO) für OpenCloud – Verfahrensverzeichnis als Markdown mit OpenCloud-Versionierung.",
+  "description": "Vesta Privacy – Datenschutzmanagementsystem (DSGVO) für OpenCloud – Verfahrensverzeichnis als Markdown mit OpenCloud-Versionierung.",
   "license": "Apache-2.0",
   "private": true,
   "type": "module",

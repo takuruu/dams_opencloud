@@ -53,14 +53,18 @@ export const useSpaceDocuments = (spaceName: () => string, folderPath: () => str
       )
       const documents: SpaceDocument[] = []
       for (const file of markdownFiles) {
-        const content = await clientService.webdav.getFileContents(currentSpace, {
+        const response = await clientService.webdav.getFileContents(currentSpace, {
           path: file.path
         })
+        const content =
+          typeof response === 'string'
+            ? response
+            : String((response as { body?: string }).body ?? '')
         documents.push({
           fileName: file.name,
           path: file.path,
           etag: file.etag,
-          content: String(content)
+          content
         })
       }
       return documents
@@ -100,7 +104,44 @@ export const useSpaceDocuments = (spaceName: () => string, folderPath: () => str
   }
 
   const canWrite = computed(() => {
-    return unref(space)?.canUpload({ user: unref(userStore.user) }) ?? false
+    const currentSpace = unref(space)
+    const user = unref(userStore.user)
+    if (!currentSpace || !user) {
+      return false
+    }
+    if (typeof currentSpace.isOwner === 'function') {
+      try {
+        if (currentSpace.isOwner(user)) {
+          return true
+        }
+      } catch {
+        // ignore and fall through
+      }
+    }
+    const ownerId =
+      (currentSpace.owner as { user?: { id?: string }; id?: string } | undefined)?.id ??
+      (currentSpace.owner as { user?: { id?: string } } | undefined)?.user?.id
+    const username = user.onPremisesSamAccountName ?? user.id
+    if (ownerId && (ownerId === username || String(ownerId).endsWith(username))) {
+      return true
+    }
+    if (typeof currentSpace.canUpload === 'function') {
+      try {
+        const result = currentSpace.canUpload({ user })
+        if (typeof result === 'boolean') {
+          return result
+        }
+      } catch {
+        // ignore and fall through
+      }
+    }
+    if (Array.isArray(currentSpace.graphPermissions)) {
+      return currentSpace.graphPermissions.some((p: string) => p.includes('createUpload'))
+    }
+    // Fallback: OpenCloud project spaces grant their creator write access;
+    // the web client does not always expose graphPermissions, so we stay
+    // optimistic here. The server still enforces permissions on write.
+    return currentSpace.driveType === 'project'
   })
 
   return {

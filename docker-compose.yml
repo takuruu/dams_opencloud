@@ -17,7 +17,7 @@ services:
       - '9200:9200'
     volumes:
       - opencloud-config:/etc/opencloud
-      - ./packages/web-app-dams/dist:/web/apps/dams
+      - ./packages/web-app-vesta-privacy/dist:/web/apps/vesta-privacy:ro,Z
 
 volumes:
   opencloud-config:

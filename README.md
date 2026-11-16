@@ -1,6 +1,6 @@
-# DAMS – Datenschutzmanagementsystem für OpenCloud
+# Vesta Privacy – Datenschutzmanagementsystem für OpenCloud
 
-DAMS ist eine Web-App-Erweiterung für [OpenCloud](https://opencloud.eu), mit der kleine
+Vesta Privacy ist eine Web-App-Erweiterung für [OpenCloud](https://opencloud.eu), mit der kleine
 Unternehmen ihre DSGVO-Dokumentation direkt in OpenCloud pflegen können – als Flat-Files
 in Markdown, mit automatischer Datei-Versionierung durch OpenCloud.
 
@@ -28,7 +28,7 @@ Funktionsumfang:
 ## Repository-Struktur
 
 ```
-├── packages/web-app-dams/   # OpenCloud Web-App (Vue 3 / TypeScript)
+├── packages/web-app-vesta-privacy/   # OpenCloud Web-App (Vue 3 / TypeScript)
 ├── templates/               # Markdown-Vorlagen & Beispiele (alle Module)
 ├── cli/                     # Optionales CLI: Sync der Markdown-Struktur via WebDAV
 └── docs/                    # Konzept, Datenmodell, Installation
@@ -39,7 +39,7 @@ Funktionsumfang:
 Voraussetzungen: Node >= 22, pnpm, Docker.
 
 ```bash
-cd packages/web-app-dams
+cd packages/web-app-vesta-privacy
 pnpm install
 pnpm build:w        # Watch-Build in dist/
 ```
@@ -59,13 +59,13 @@ Nutzung: einen Space namens `Datenschutz` anlegen und dort die Ordner aus
 
 ## Konfiguration
 
-Die App kann über die OpenCloud-`config.json` (Abschnitt der App `dams`) konfiguriert
+Die App kann über die OpenCloud-`config.json` (Abschnitt der App `vesta-privacy`) konfiguriert
 werden:
 
 ```json
 {
   "apps": {
-    "dams": {
+    "vesta-privacy": {
       "spaceName": "Datenschutz",
       "folderPaths": {
         "folderPath": "/Verfahrensverzeichnis",
@@ -91,11 +91,11 @@ export OPENCLOUD_URL=https://opencloud.example.com
 export OPENCLOUD_ACCESS_TOKEN=<persönliches Zugriffstoken>
 export OPENCLOUD_SPACE=Datenschutz
 
-python3 cli/dams_sync.py templates/Verfahrensverzeichnis /Verfahrensverzeichnis
-python3 cli/dams_sync.py templates/Auftragsverarbeiter /Auftragsverarbeiter
-python3 cli/dams_sync.py templates/TOM /TOM
-python3 cli/dams_sync.py templates/Datenschutzvorfälle /Datenschutzvorfälle
-python3 cli/dams_sync.py templates/Betroffenenanfragen /Betroffenenanfragen
+python3 cli/vesta_sync.py templates/Verfahrensverzeichnis /Verfahrensverzeichnis
+python3 cli/vesta_sync.py templates/Auftragsverarbeiter /Auftragsverarbeiter
+python3 cli/vesta_sync.py templates/TOM /TOM
+python3 cli/vesta_sync.py templates/Datenschutzvorfälle /Datenschutzvorfälle
+python3 cli/vesta_sync.py templates/Betroffenenanfragen /Betroffenenanfragen
 ```
 
 Das CLI legt fehlende Ordner an und lädt neue/geänderte Markdown-Dateien per WebDAV

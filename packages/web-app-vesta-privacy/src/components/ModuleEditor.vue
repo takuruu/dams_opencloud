@@ -8,7 +8,7 @@
         v-if="field.type === 'select'"
         :id="`field-${field.key}`"
         v-model="draft.data[field.key]"
-        class="ext:w-full ext:rounded ext:border ext:border-gray-300 ext:px-3 ext:py-2 ext:text-sm"
+        class="ext:w-full ext:rounded ext:border ext:border-gray-300 ext:px-3 ext:py-2 ext:text-sm ext:bg-white ext:text-gray-900 ext:dark:bg-gray-800 ext:dark:text-gray-100 ext:dark:border-gray-600"
       >
         <option v-for="option in field.options" :key="option" :value="option">
           {{ option }}
@@ -19,14 +19,14 @@
         :id="`field-${field.key}`"
         v-model="draft.beschreibung"
         rows="10"
-        class="ext:w-full ext:rounded ext:border ext:border-gray-300 ext:px-3 ext:py-2 ext:text-sm ext:font-mono"
+        class="ext:w-full ext:rounded ext:border ext:border-gray-300 ext:px-3 ext:py-2 ext:text-sm ext:font-mono ext:bg-white ext:text-gray-900 ext:dark:bg-gray-800 ext:dark:text-gray-100 ext:dark:border-gray-600"
       />
       <input
         v-else-if="field.type === 'list'"
         :id="`field-${field.key}`"
         v-model="listInputs[field.key]"
         type="text"
-        class="ext:w-full ext:rounded ext:border ext:border-gray-300 ext:px-3 ext:py-2 ext:text-sm"
+        class="ext:w-full ext:rounded ext:border ext:border-gray-300 ext:px-3 ext:py-2 ext:text-sm ext:bg-white ext:text-gray-900 ext:dark:bg-gray-800 ext:dark:text-gray-100 ext:dark:border-gray-600"
         :placeholder="field.placeholder ? $gettext(field.placeholder) : ''"
         :required="field.required"
       />
@@ -35,11 +35,11 @@
         :id="`field-${field.key}`"
         v-model="draft.data[field.key]"
         :type="field.type === 'date' ? 'date' : 'text'"
-        class="ext:w-full ext:rounded ext:border ext:border-gray-300 ext:px-3 ext:py-2 ext:text-sm"
+        class="ext:w-full ext:rounded ext:border ext:border-gray-300 ext:px-3 ext:py-2 ext:text-sm ext:bg-white ext:text-gray-900 ext:dark:bg-gray-800 ext:dark:text-gray-100 ext:dark:border-gray-600"
         :required="field.required"
       />
     </div>
-    <p class="ext:text-xs ext:text-gray-500">
+    <p class="ext:text-xs ext:text-gray-500 ext:dark:text-gray-400">
       {{
         $gettext(
           'Beim Speichern wird eine neue Dateiversion in OpenCloud erzeugt (Versionshistorie über die Datei-Details einsehbar).'

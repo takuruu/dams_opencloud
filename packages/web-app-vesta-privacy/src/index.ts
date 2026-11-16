@@ -2,7 +2,6 @@ import '@opencloud-eu/extension-sdk/tailwind.css'
 import {
   AppMenuItemExtension,
   AppNavigationItem,
-  AppWrapperRoute,
   defineWebApplication,
   useUserStore
 } from '@opencloud-eu/web-pkg'
@@ -28,7 +27,7 @@ export default defineWebApplication({
 
     const appInfo = {
       id: appId,
-      name: $gettext('Datenschutz'),
+      name: $gettext('Vesta Privacy'),
       icon: 'shield-check',
       color: '#04a07c'
     }
@@ -42,7 +41,7 @@ export default defineWebApplication({
       ...MODULES.map((module) => ({
         path: `/${module.routeSlug}`,
         name: `${appId}-${module.id}`,
-        component: AppWrapperRoute(ModuleView, { applicationId: appId }),
+        component: ModuleView,
         meta: {
           authContext: 'user',
           title: $gettext(module.title)

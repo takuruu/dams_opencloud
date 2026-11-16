@@ -6,10 +6,10 @@ Nutzung:
     export OPENCLOUD_ACCESS_TOKEN=<persönliches Zugriffstoken>
     export OPENCLOUD_SPACE=Datenschutz       # optional, Standard: Datenschutz
 
-    python3 dams_sync.py <lokaler-ordner> <ziel-pfad-im-space>
+    python3 vesta_sync.py <lokaler-ordner> <ziel-pfad-im-space>
 
 Beispiel:
-    python3 dams_sync.py templates/Verfahrensverzeichnis /Verfahrensverzeichnis
+    python3 vesta_sync.py templates/Verfahrensverzeichnis /Verfahrensverzeichnis
 
 Das Tool legt fehlende Ordner im Space an und lädt neue oder geänderte Dateien
 hoch. Bereits existierende Dateien werden überschrieben - OpenCloud erzeugt

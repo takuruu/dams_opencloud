@@ -1,16 +1,35 @@
 ---
 titel: <Kurztitel des Vorfalls>
-eingang: <JJJJ-MM-TT – Datum der Feststellung>
-betroffene_daten: <Kategorien der betroffenen Daten>
-betroffene_personen: <ungefähre Anzahl und Kategorien betroffener Personen>
-meldepflichtig: unbekannt
-frist_72h: <JJJJ-MM-TT – 72-h-Frist, falls zutreffend>
 status: offen
 erstellt: <JJJJ-MM-TT>
 geaendert: <JJJJ-MM-TT>
 ---
 
 # <Kurztitel des Vorfalls>
+
+## Eingang
+
+<JJJJ-MM-TT – Datum der Feststellung>
+
+## Betroffene Daten
+
+<Kategorien der betroffenen Daten; besondere Kategorien (Art. 9/10) gesondert kennzeichnen>
+
+## Betroffene Personen
+
+<ungefähre Anzahl und Kategorien betroffener Personen>
+
+## Meldepflichtig
+
+<unbekannt/ja/nein – Begründung>
+
+## 72-h-Frist
+
+<JJJJ-MM-TT – 72-h-Frist, falls zutreffend>
+
+## Verknüpftes Verfahren
+
+<Titel der betroffenen Verarbeitungstätigkeit aus dem Verfahrensverzeichnis>
 
 ## Sachverhalt
 

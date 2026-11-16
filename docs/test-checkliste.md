@@ -1,11 +1,11 @@
-# Test-Checkliste: DAMS mit echter OpenCloud-Instanz
+# Test-Checkliste: Vesta Privacy mit echter OpenCloud-Instanz
 
 Diese Checkliste führt durch den Laufzeit-Test der App gegen eine echte
 OpenCloud-Instanz. Voraussetzungen: Docker, Node >= 22, pnpm.
 
 ## 1. Build & Server starten
 
-- [ ] `cd packages/web-app-dams && pnpm install && pnpm build`
+- [ ] `cd packages/web-app-vesta-privacy && pnpm install && pnpm build`
       → `dist/` wird erzeugt (enthält `manifest.json` und JS-Bundles)
 - [ ] Im Repo-Root: `docker compose up`
       → OpenCloud startet auf `https://localhost:9200`
@@ -31,11 +31,11 @@ export OPENCLOUD_URL=https://localhost:9200
 export OPENCLOUD_ACCESS_TOKEN=<Token aus Einstellungen → Zugriffstoken>
 export OPENCLOUD_INSECURE=1
 
-python3 cli/dams_sync.py templates/Verfahrensverzeichnis /Verfahrensverzeichnis
-python3 cli/dams_sync.py templates/Auftragsverarbeiter /Auftragsverarbeiter
-python3 cli/dams_sync.py templates/TOM /TOM
-python3 cli/dams_sync.py "templates/Datenschutzvorfälle" /Datenschutzvorfälle
-python3 cli/dams_sync.py templates/Betroffenenanfragen /Betroffenenanfragen
+python3 cli/vesta_sync.py templates/Verfahrensverzeichnis /Verfahrensverzeichnis
+python3 cli/vesta_sync.py templates/Auftragsverarbeiter /Auftragsverarbeiter
+python3 cli/vesta_sync.py templates/TOM /TOM
+python3 cli/vesta_sync.py "templates/Datenschutzvorfälle" /Datenschutzvorfälle
+python3 cli/vesta_sync.py templates/Betroffenenanfragen /Betroffenenanfragen
 ```
 
 - [ ] CLI-Ausgabe: jeweils „hochgeladen“ ohne HTTP-Fehler
@@ -58,7 +58,7 @@ python3 cli/dams_sync.py templates/Betroffenenanfragen /Betroffenenanfragen
 
 ## 5. Konfiguration testen (optional)
 
-- [ ] In der `config.json` (Bereich `apps.dams`) `spaceName` oder einen
+- [ ] In der `config.json` (Bereich `apps.vesta-privacy`) `spaceName` oder einen
       `folderPaths`-Eintrag ändern → OpenCloud neu starten → App folgt der
       neuen Konfiguration (Space/Ordner wird bei Aufruf des Moduls angelegt)
 

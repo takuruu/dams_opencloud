@@ -13,20 +13,20 @@
     <template v-else>
       <div class="ext:flex ext:items-center ext:justify-between">
         <h1>{{ module.title }}</h1>
-        <OcButton
-          v-if="canWrite"
-          variation="primary"
-          size="small"
-          @click="openEditor(emptyRecord())"
-        >
-          {{ $gettext(module.newLabel) }}
-        </OcButton>
+        <div v-if="canWrite" class="ext:flex ext:gap-2">
+          <OcButton variation="passive" size="small" @click="openWizard">
+            {{ $gettext('Assistent: Eintrag aus Vorlage anlegen') }}
+          </OcButton>
+          <OcButton variation="primary" size="small" @click="openEditor(emptyRecord())">
+            {{ $gettext(module.newLabel) }}
+          </OcButton>
+        </div>
       </div>
-      <p class="ext:text-sm ext:text-gray-500">{{ $gettext(module.hint) }}</p>
+      <p class="ext:text-sm ext:text-gray-500 ext:dark:text-gray-400">{{ $gettext(module.hint) }}</p>
       <div v-if="loading">{{ $gettext('Lade Verzeichnis …') }}</div>
       <table v-else-if="records.length" class="ext:w-full ext:text-left ext:text-sm">
         <thead>
-          <tr class="ext:border-b ext:border-gray-200">
+          <tr class="ext:border-b ext:border-gray-200 ext:dark:border-gray-700">
             <th v-for="column in module.columns" :key="column.key" class="ext:py-2 ext:pr-4">
               {{ $gettext(column.label) }}
             </th>
@@ -34,7 +34,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="record in records" :key="record.path" class="ext:border-b ext:border-gray-100">
+          <tr v-for="record in records" :key="record.path" class="ext:border-b ext:border-gray-100 ext:dark:border-gray-800">
             <td
               v-for="(column, index) in module.columns"
               :key="column.key"
@@ -56,15 +56,22 @@
           </tr>
         </tbody>
       </table>
-      <div v-else class="ext:p-8 ext:text-gray-500">
+      <div v-else class="ext:p-8 ext:text-gray-500 ext:dark:text-gray-400">
         {{ $gettext('Noch keine Einträge vorhanden.') }}
       </div>
       <div
         v-if="editorOpen"
-        class="ext:fixed ext:inset-y-0 ext:right-0 ext:w-96 ext:max-w-full ext:overflow-y-auto ext:border-l ext:border-gray-200 ext:bg-white ext:shadow-lg"
+        class="ext:fixed ext:inset-y-0 ext:right-0 ext:w-96 ext:max-w-full ext:overflow-y-auto ext:border-l ext:border-gray-200 ext:bg-white ext:shadow-lg ext:dark:border-gray-700 ext:dark:bg-gray-900"
       >
+        <WizardDialog
+          v-if="wizardMode && editorRecord"
+          :module="module"
+          :record="editorRecord"
+          @save="saveFromEditor"
+          @cancel="editorOpen = false"
+        />
         <ModuleEditor
-          v-if="editorRecord"
+          v-else-if="editorRecord"
           :module="module"
           :record="editorRecord"
           @save="saveFromEditor"
@@ -84,6 +91,7 @@ import { useModule } from '../composables/useModule'
 import { emptyModuleRecord } from '../lib/documents'
 import { appId, defaultConfig, DamsConfig, DamsModule, getModule, ModuleRecord } from '../types'
 import ModuleEditor from '../components/ModuleEditor.vue'
+import WizardDialog from '../components/WizardDialog.vue'
 
 const props = defineProps<{
   applicationConfig?: AppConfigObject
@@ -103,13 +111,14 @@ const config = computed<DamsConfig>(() => {
   }
 })
 
-const { records, loading, space, canWrite, loadRecords, saveRecord } = useModule(
+const { records, loading, space, canWrite, loadRecords, loadTemplate, saveRecord } = useModule(
   unref(module),
   () => unref(config)
 )
 
 const editorOpen = ref(false)
 const editorRecord = ref<ModuleRecord | null>(null)
+const wizardMode = ref(false)
 
 const emptyRecord = (): ModuleRecord => emptyModuleRecord(unref(module))
 
@@ -124,7 +133,18 @@ const displayValue = (value: string | string[] | undefined): string => {
 }
 
 const openEditor = (record: ModuleRecord) => {
+  wizardMode.value = false
   editorRecord.value = record
+  editorOpen.value = true
+}
+
+const openWizard = async () => {
+  const template = await loadTemplate()
+  if (!template) {
+    return
+  }
+  wizardMode.value = true
+  editorRecord.value = template
   editorOpen.value = true
 }
 

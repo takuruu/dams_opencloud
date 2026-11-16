@@ -1,4 +1,4 @@
-export const appId = 'dams'
+export const appId = 'vesta-privacy'
 
 export type ModuleFieldType = 'text' | 'list' | 'select' | 'date' | 'textarea'
 

@@ -8,7 +8,7 @@ import { DamsConfig, DamsModule, ModuleRecord } from '../types'
 
 export const useModule = (module: DamsModule, config: () => DamsConfig) => {
   const { $gettext } = useGettext()
-  const { showMessage } = useMessages()
+  const { showMessage, showErrorMessage } = useMessages()
 
   const documents = useSpaceDocuments(
     () => config().spaceName,
@@ -27,6 +27,19 @@ export const useModule = (module: DamsModule, config: () => DamsConfig) => {
           'de'
         )
       )
+  }
+
+  const loadTemplate = async (): Promise<ModuleRecord | null> => {
+    const loaded = await documents.loadDocuments()
+    const template = loaded.find((doc) => /^00-vorlage-.*\.md$/i.test(doc.fileName))
+    if (!template) {
+      showErrorMessage({
+        title: $gettext('Keine Vorlage gefunden'),
+        errors: [new Error($gettext('Im Ordner wurde keine Datei 00-vorlage-*.md gefunden.'))]
+      })
+      return null
+    }
+    return parseModuleRecord(module, '', '', template.content)
   }
 
   const saveRecord = async (record: ModuleRecord): Promise<ModuleRecord | null> => {
@@ -74,6 +87,7 @@ export const useModule = (module: DamsModule, config: () => DamsConfig) => {
     space,
     canWrite,
     loadRecords,
+    loadTemplate,
     saveRecord
   }
 }
