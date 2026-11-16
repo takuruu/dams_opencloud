@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { buildModuleMarkdown, emptyModuleRecord, parseModuleRecord } from '../../src/lib/documents'
+import { computeDashboardStats, computeModuleStats } from '../../src/lib/dashboard'
 import { buildFileName } from '../../src/lib/frontmatter'
-import { getModule, MODULES } from '../../src/types'
+import { getModule, MODULES, ModuleRecord } from '../../src/types'
 
 describe('frontmatter helpers', () => {
   it('builds unique, slugged file names', () => {
@@ -92,5 +93,46 @@ describe('module documents', () => {
     expect(record.data.umsetzung).toBe('geplant')
     expect(record.data.frist).toBe('')
     expect(record.data.beschreibung).toBeUndefined()
+  })
+})
+
+describe('dashboard readiness', () => {
+  const rec = (status: string): ModuleRecord => ({
+    fileName: 'x.md',
+    path: '/x',
+    data: { status },
+    beschreibung: ''
+  })
+
+  it('counts only completed statuses as done', () => {
+    const records = getModule('records')
+    const stats = computeModuleStats(records, [
+      rec('freigegeben'),
+      rec('entwurf'),
+      rec('in Bearbeitung'),
+      rec('freigegeben')
+    ])
+    expect(stats.total).toBe(4)
+    expect(stats.done).toBe(2)
+    expect(stats.open).toBe(2)
+    expect(stats.ratio).toBe(0.5)
+  })
+
+  it('handles empty modules without division by zero', () => {
+    const stats = computeModuleStats(getModule('tom'), [])
+    expect(stats.ratio).toBe(0)
+    expect(stats.total).toBe(0)
+  })
+
+  it('aggregates across modules excluding company', () => {
+    const map = new Map<string, ModuleRecord[]>()
+    map.set('records', [rec('freigegeben'), rec('entwurf')])
+    map.set('tom', [rec('umgesetzt')])
+    map.set('company', [rec('freigegeben'), rec('freigegeben')])
+    const stats = computeDashboardStats(map)
+    expect(stats.total).toBe(3)
+    expect(stats.done).toBe(2)
+    expect(stats.ratio).toBeCloseTo(2 / 3)
+    expect(stats.modules.map((m) => m.module.id)).not.toContain('company')
   })
 })
