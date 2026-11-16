@@ -19,7 +19,7 @@ const moduleIcons: Record<string, string> = {
   tom: 'lock-2',
   incidents: 'alarm-warning',
   dsr: 'user-settings',
-  policies: 'book-open-text'
+  policies: 'file-text'
 }
 
 export default defineWebApplication({
