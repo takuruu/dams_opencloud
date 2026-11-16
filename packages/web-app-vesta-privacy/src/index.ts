@@ -13,11 +13,13 @@ import { appId, MODULES } from './types'
 import ModuleView from './views/ModuleView.vue'
 
 const moduleIcons: Record<string, string> = {
+  company: 'building-2',
   records: 'shield-check',
   avv: 'file-shield-2',
   tom: 'lock-2',
   incidents: 'alarm-warning',
-  dsr: 'user-settings'
+  dsr: 'user-settings',
+  policies: 'book-open-text'
 }
 
 export default defineWebApplication({

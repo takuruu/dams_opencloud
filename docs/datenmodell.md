@@ -6,11 +6,13 @@ Vesta Privacy verwendet zwei Ordner im Space, je ein Modul:
 
 | Modul                                            | Ordner                  | Route              |
 | ------------------------------------------------ | ----------------------- | ------------------ |
+| Unternehmen (Stammdaten)                         | `/Unternehmen`          | `/{appId}/unternehmen` |
 | Verfahrensverzeichnis (Art. 30)                  | `/Verfahrensverzeichnis` | `/{appId}/records` |
 | Auftragsverarbeiter & AVV (Art. 28)              | `/Auftragsverarbeiter`  | `/{appId}/avv`     |
 | Technische und organisatorische Maßnahmen (Art. 32) | `/TOM`                | `/{appId}/tom`     |
 | Datenschutzvorfälle (Art. 33/34)                  | `/Datenschutzvorfälle`  | `/{appId}/vorfälle` |
 | Betroffenenanfragen (Art. 15–22)                 | `/Betroffenenanfragen`  | `/{appId}/anfragen` |
+| Richtlinien & Konzepte                           | `/Richtlinien`          | `/{appId}/richtlinien` |
 
 Alle Module folgen demselben Prinzip: eine Markdown-Datei pro Eintrag,
 YAML-Frontmatter für strukturierte Felder, Freitext für Details. Die App legt

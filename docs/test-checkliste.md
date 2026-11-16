@@ -15,9 +15,9 @@ OpenCloud-Instanz. Voraussetzungen: Docker, Node >= 22, pnpm.
 ## 2. App-Registrierung prüfen
 
 - [ ] App-Switcher zeigt „Datenschutz“ (Schild-Icon)
-- [ ] Klick öffnet die App; linke Sidebar zeigt **fünf** Nav-Items:
-      Verfahrensverzeichnis, Auftragsverarbeiter & AVV, TOM, Datenschutzvorfälle,
-      Betroffenenanfragen
+- [ ] Klick öffnet die App; linke Sidebar zeigt **sieben** Nav-Items:
+      Unternehmen, Verfahrensverzeichnis, Auftragsverarbeiter & AVV, TOM,
+      Datenschutzvorfälle, Betroffenenanfragen, Richtlinien & Konzepte
 - [ ] Keine Fehler in der Browser-Konsole (v. a. keine Module-Federation-Fehler)
 
 ## 3. Space & Ordner anlegen

@@ -6,12 +6,14 @@ in Markdown, mit automatischer Datei-Versionierung durch OpenCloud.
 
 Funktionsumfang:
 
+- **Unternehmen** (Stammdaten als Markdown-Datei, Startseite der App)
 - **Verfahrensverzeichnis** nach Art. 30 DSGVO
 - **Auftragsverarbeiter & AVV** nach Art. 28 DSGVO (Vertragsstatus, Drittland-Angaben,
   TOM-Nachweis, Verknüpfung zu Verfahren)
 - **TOM** nach Art. 32 DSGVO (Maßnahmenkatalog mit Umsetzungsstatus je Maßnahme)
 - **Datenschutzvorfälle** nach Art. 33/34 DSGVO (mit Meldepflicht-Prüfung und 72-h-Frist)
 - **Betroffenenanfragen** nach Art. 15–22 DSGVO (mit Fristen-Tracking)
+- **Richtlinien & Konzepte** (interne Datenschutzrichtlinien mit Prüfzyklus)
 
 ## Grundprinzip
 
@@ -68,11 +70,13 @@ werden:
     "vesta-privacy": {
       "spaceName": "Datenschutz",
       "folderPaths": {
-        "folderPath": "/Verfahrensverzeichnis",
+        "folderPath": "/Verfahrenszeichnis",
         "processorsFolderPath": "/Auftragsverarbeiter",
         "tomFolderPath": "/TOM",
         "incidentsFolderPath": "/Datenschutzvorfälle",
-        "dsrFolderPath": "/Betroffenenanfragen"
+        "dsrFolderPath": "/Betroffenenanfragen",
+        "companyFolderPath": "/Unternehmen",
+        "policiesFolderPath": "/Richtlinien"
       }
     }
   }

@@ -11,8 +11,16 @@ describe('frontmatter helpers', () => {
 })
 
 describe('module documents', () => {
-  it('defines five non-overlapping modules', () => {
-    expect(MODULES.map((m) => m.id)).toEqual(['records', 'avv', 'tom', 'incidents', 'dsr'])
+  it('defines seven non-overlapping modules', () => {
+    expect(MODULES.map((m) => m.id)).toEqual([
+      'company',
+      'records',
+      'avv',
+      'tom',
+      'incidents',
+      'dsr',
+      'policies'
+    ])
     const slugs = MODULES.map((m) => m.routeSlug)
     expect(new Set(slugs).size).toBe(slugs.length)
   })

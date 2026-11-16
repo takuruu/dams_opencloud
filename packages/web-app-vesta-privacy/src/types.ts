@@ -60,6 +60,47 @@ const beschreibungField = (label: string): ModuleField => ({
 
 export const MODULES: DamsModule[] = [
   {
+    id: 'company',
+    routeSlug: 'unternehmen',
+    title: 'Unternehmen',
+    hint: 'Stammdaten des Unternehmens als Markdown-Datei im Space. Jede Änderung erzeugt automatisch eine neue Dateiversion in OpenCloud.',
+    folderPath: '/Unternehmen',
+    configKey: 'companyFolderPath',
+    nameField: 'titel',
+    newLabel: 'Neuer Unternehmensdatensatz',
+    fields: [
+      { key: 'titel', label: 'Titel des Datensatzes', type: 'text', required: true },
+      { key: 'firma', label: 'Name des Unternehmens', type: 'text', required: true },
+      { key: 'rechtsform', label: 'Rechtsform', type: 'text', required: false },
+      { key: 'adresse', label: 'Adresse (Straße, PLZ, Ort)', type: 'text', required: true },
+      { key: 'telefon', label: 'Telefon', type: 'text', required: false },
+      { key: 'email', label: 'E-Mail (zentral)', type: 'text', required: false },
+      { key: 'website', label: 'Website', type: 'text', required: false },
+      {
+        key: 'geschaeftsfuehrung',
+        label: 'Geschäftsführung / Inhaber',
+        type: 'text',
+        required: true
+      },
+      {
+        key: 'datenschutzbeauftragter',
+        label: 'Datenschutzbeauftragter (falls bestellt)',
+        type: 'text',
+        required: false
+      },
+      { key: 'registergericht', label: 'Registergericht & Registernummer', type: 'text', required: false },
+      { key: 'ustid', label: 'USt-IdNr.', type: 'text', required: false },
+      { key: 'branche', label: 'Branche', type: 'text', required: false },
+      { key: 'mitarbeiter', label: 'Anzahl Mitarbeitende (ca.)', type: 'text', required: false },
+      beschreibungField('Weitere Angaben (Markdown)')
+    ],
+    columns: [
+      { key: 'titel', label: 'Datensatz' },
+      { key: 'firma', label: 'Unternehmen' },
+      { key: 'geaendert', label: 'Geändert' }
+    ]
+  },
+  {
     id: 'records',
     routeSlug: 'records',
     title: 'Verfahrensverzeichnis (Art. 30 DSGVO)',
@@ -288,6 +329,43 @@ export const MODULES: DamsModule[] = [
       { key: 'art', label: 'Art' },
       { key: 'frist', label: 'Frist' },
       { key: 'status', label: 'Status' }
+    ]
+  },
+  {
+    id: 'policies',
+    routeSlug: 'richtlinien',
+    title: 'Richtlinien & Konzepte',
+    hint: 'Interne Datenschutzrichtlinien und Konzepte als Markdown-Dateien im Space. Jede Änderung erzeugt automatisch eine neue Dateiversion in OpenCloud.',
+    folderPath: '/Richtlinien',
+    configKey: 'policiesFolderPath',
+    nameField: 'titel',
+    newLabel: 'Neue Richtlinie',
+    fields: [
+      { key: 'titel', label: 'Titel der Richtlinie', type: 'text', required: true },
+      {
+        key: 'art',
+        label: 'Art',
+        type: 'select',
+        required: true,
+        options: ['Richtlinie', 'Konzept', 'Verfahrensanweisung', 'Sonstiges']
+      },
+      { key: 'verantwortlicher', label: 'Verantwortlich', type: 'text', required: true },
+      { key: 'gueltig_ab', label: 'Gültig ab', type: 'date', required: true },
+      { key: 'naechste_pruefung', label: 'Nächste Prüfung', type: 'date', required: false },
+      {
+        key: 'status',
+        label: 'Status',
+        type: 'select',
+        required: true,
+        options: [...RECORD_STATUS_VALUES]
+      },
+      beschreibungField('Inhalt der Richtlinie (Markdown)')
+    ],
+    columns: [
+      { key: 'titel', label: 'Titel' },
+      { key: 'art', label: 'Art' },
+      { key: 'status', label: 'Status' },
+      { key: 'naechste_pruefung', label: 'Nächste Prüfung' }
     ]
   }
 ]

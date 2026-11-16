@@ -63,7 +63,9 @@ Weboberfläche: https://localhost:9200 (Login `admin` / `admin`).
         "processorsFolderPath": "/Auftragsverarbeiter",
         "tomFolderPath": "/TOM",
         "incidentsFolderPath": "/Datenschutzvorfälle",
-        "dsrFolderPath": "/Betroffenenanfragen"
+        "dsrFolderPath": "/Betroffenenanfragen",
+        "companyFolderPath": "/Unternehmen",
+        "policiesFolderPath": "/Richtlinien"
       }
     }
   }
